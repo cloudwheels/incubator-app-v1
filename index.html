@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div>
+        <div class="nav-container">
+            <div class="top-nav"><a href="#" class="top-nav-border">Intro</a><a href="#"
+                    class="top-nav-border">Earn</a><a href="#" class="top-nav-border">Protocol</a><a
+                    href="#">Reports</a></div>
+            <div class="nav-corner"><a href="#">Feedback</a><a href="https://t.me"
+                    target="_blank"><img src="/img/telegram.svg" alt="telegram"></a><a
+                    href="https://twitter.com" target="_blank"><img src="/img/twitter.svg"
+                        alt="twitter"></a><a href="https://discord.gg" target="_blank"><img
+                        src="/img/discord.svg" alt="discord"></a></div>
+            <a href="/"><img class="nav-logo" src="/img/logo.png" alt="incubator logo"></a>
+        </div>
+
+        <div class="content-inner">
+            <div class="intro"><div>Introduction to the fund<a href="#" target="_blank">Read the protocol</a></div></div>
+            <table class="bounty-table">
+                <thead>
+                <tr>
+                    <th><div  class="left-column">Id</div></th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody id="bounties">
+
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // example url for the to spec list https://api.trello.com/1/list/5f6f3b68348cca07137c4d3b/cards?key=910955be8cf85efce2eb715fea302f2b
+        var service = 'https://api.trello.com/1/';
+        var key = '910955be8cf85efce2eb715fea302f2b';
+        var listId_toSpec = '5f6f3b68348cca07137c4d3b';
+        var listId_tendering = '5f6f3b6a6f0b1b801b2f89b2';
+
+        $(document).ready(function () {
+
+            jQuery.support.cors = true;
+
+            $.ajax(
+                {
+                    type: "GET",
+                    url: service + 'list/' + listId_toSpec + '/cards?key=' + '910955be8cf85efce2eb715fea302f2b',
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+
+                        console.log('Got data:');
+                        console.dir(data);
+
+                        $('#bounties').append(
+                            $.map(data, function (item, index) {
+                                return '<tr><td><a href="'+ item.shortUrl + '"><div class="left-column">' + item.id + '</div></a></td><td><div>' + item.name + '</div></td></tr>';
+                            }).join());
+                    },
+
+                    error: function (msg) {
+
+                        alert(msg.responseText);
+                    }
+                });
+        })
+
+    </script>
+</body>
+
+</html>
