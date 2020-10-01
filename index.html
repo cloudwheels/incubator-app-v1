@@ -3,37 +3,85 @@
 
 <head>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <title>Dash Incubator - Earn rewards from advancing Dash</title>
+    <meta name="description"
+        content="An incubator fund through which developers and other contributors can share the benefits of improving and advancing the Dash cryptocurrency in the form of incentives.">
+    <meta name="keywords" content="Dash, cryptocurrency, crypto, developers, earn incentives">
+    <meta http-equiv="content-language" content="en">
+    <meta name="google" content="notranslate">
+    <meta property="og:description" content="Help advance Dash and earn incentives">
+    <meta property="og:image" content="https://media.dash.org/wp-content/uploads/dash_logo_2018_rgb_for_screens.svg">
+    <meta property="og:url" content="https://dashincubator.io">
 </head>
 
 <body>
 
     <div>
-        <div class="nav-container">
-            <div class="top-nav"><a href="#" class="top-nav-border">Intro</a><a href="#"
-                    class="top-nav-border">Earn</a><a href="#" class="top-nav-border">Protocol</a><a
-                    href="#">Reports</a></div>
-            <div class="nav-corner"><a href="#">Feedback</a><a href="https://t.me"
-                    target="_blank"><img src="./img/telegram.svg" alt="telegram"></a><a
-                    href="https://twitter.com" target="_blank"><img src="./img/twitter.svg"
-                        alt="twitter"></a><a href="https://discord.gg" target="_blank"><img
-                        src="./img/discord.svg" alt="discord"></a></div>
-            <a href="/"><img class="nav-logo" src="./img/logo.png" alt="incubator logo"></a>
-        </div>
+        <div class="view-homepage view-undefined">
+            <div class="nav-container">
+                <!--
+                <div class="top-nav"><a href="#" class="top-nav-border">Intro</a><a href="#"
+                        class="top-nav-border">Earn</a><a href="#" class="top-nav-border">Protocol</a><a
+                        href="#">Reports</a></div>
+                -->
+                <div class="nav-corner">
+                    <!--
+                    <a href="#">Feedback</a><a href="https://t.me" target="_blank"><img src="./img/telegram.svg"
+                            alt="telegram"></a><a href="https://twitter.com" target="_blank"><img
+                            src="./img/twitter.svg" alt="twitter"></a>
+                    -->
+                    <a href="http://chat.dashdevs.org" target="_blank"><img src="./img/discord.svg" alt="discord"></a>
+                </div>
+                <a href="/"><img class="nav-logo" src="./img/logo.png" alt="incubator logo"></a>
+            </div>
 
-        <div class="content-inner">
-            <div class="intro"><div>Introduction to the fund<a href="#" target="_blank">Read the protocol</a></div></div>
-            <table class="bounty-table">
-                <thead>
-                <tr>
-                    <th><div  class="left-column">Id</div></th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody id="bounties">
+            <div class="content-inner">
+                <h1>Introduction</h1><br>
+                <h2>About the incubator fund</h2><br>
+                <div class="intro">
+                    <div>The fund's aim is to provide incentives for advancing and adding value to Dash. Lorum ipsum etc.</div>
+                </div>
+                <br>
+                <h2>Further information</h2><br>
+                <div class="intro">
+                    <div>Full details can be found in the protocol<a href="#" target="_blank">Read the protocol</a></div>
+                </div>
+                <br><br>
+                <h1>Available Bounties</h1><br>
+                <h2>For Speccing Projects</h2><br>
+                <table class="bounty-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="left-column">Name</div>
+                            </th>
+                            <th>Reward</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bounties-tospec">
 
-            </tbody>
-            </table>
+                    </tbody>
+                </table>
+                <br>
+                <h2>For Project Tasks</h2><br>
+                <table class="bounty-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="left-column">Name</div>
+                            </th>
+                            <th>Reward</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bounties-tendering">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -48,6 +96,7 @@
 
             jQuery.support.cors = true;
 
+            // get toSpec Cards
             $.ajax(
                 {
                     type: "GET",
@@ -58,12 +107,54 @@
                     cache: false,
                     success: function (data) {
 
-                        console.log('Got data:');
+                        console.log('Got toSpec data:');
                         console.dir(data);
 
-                        $('#bounties').append(
-                            $.map(data, function (item, index) {
-                                return '<tr><td><a href="'+ item.shortUrl + '"><div class="left-column">' + item.id + '</div></a></td><td><div>' + item.name + '</div></td></tr>';
+                        //filter to only get those with green labels
+
+                        let hasLabels = data.filter(item => item.hasOwnProperty('labels'));
+                        let filtered = hasLabels.filter(item => item.labels[0].color == 'green');
+                        
+                        console.log('Filtered data:');
+                        console.dir(filtered);
+
+                        $('#bounties-tospec').append(
+                            $.map(filtered, function (item, index) {
+                                return '<tr><td><a href="./bounty-detail.html?bountytrellourl=' + item.shortUrl + '&bountyname=' + item.name + '&bountyrewardusd=50"><div class="left-column">' + item.name + '</div></a></td><td><div>USD $50</div></td></tr>';
+                            }).join());
+                    },
+
+                    error: function (msg) {
+
+                        alert(msg.responseText);
+                    }
+                });
+
+                // get tendering Cards
+            $.ajax(
+                {
+                    type: "GET",
+                    url: service + 'list/' + listId_tendering + '/cards?key=' + '910955be8cf85efce2eb715fea302f2b',
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+
+                        console.log('Got tendering data:');
+                        console.dir(data);
+
+                        //filter to only get those with green labels
+
+                        let hasLabelsTendering = data.filter(item => item.hasOwnProperty('labels'));
+                        let filteredTendering = hasLabelsTendering.filter(item => item.labels[0].color == 'green');
+                        
+                        console.log('Filtered tendering data:');
+                        console.dir(filteredTendering);
+
+                        $('#bounties-tendering').append(
+                            $.map(filteredTendering, function (item, index) {
+                                return '<tr><td><a href="./bounty-detail.html?bountytrellourl=' + item.shortUrl + '&bountyname=' + item.name + '&bountyrewardusd=50"><div class="left-column">' + item.name + '</div></a></td><td><div>USD $50</div></td></tr>';
                             }).join());
                     },
 

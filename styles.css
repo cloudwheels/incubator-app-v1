@@ -7,6 +7,25 @@ body {
     color: white;
 }
 
+h1 {
+    font-family: monospace;
+    font-size: 20px;
+    line-height: 30px;
+    color: white;
+    margin: 0;
+  }
+
+h2 {
+font-family: monospace;
+font-size: 16px;
+line-height: 24px;
+color: white;
+margin: 0;
+}
+  
+  
+
+/* nav */
 .nav-container {
     width: 100%;
     text-align: center;
@@ -49,6 +68,14 @@ body {
     text-decoration: none;
 }
 
+.nav-container h1{
+    display: inline-block;
+    color: white;
+    margin: 40px 0;
+    font-size: 55px;
+    line-height: 55px;
+  }
+
 .nav-corner img {
     margin-bottom: -10px;
     margin-left: 15px;
@@ -56,17 +83,80 @@ body {
     cursor: pointer;
 }
 
+.nav-tagline{
+    float: right;
+  }
+
 .nav-logo {
     margin: 45px 0;
     max-width: 90%;
     margin-top: 70px;
 }
 
-.content-inner {
+
+
+@media(max-width: 870px){
+    .nav-logo{
+      width: 85%;
+      margin-bottom: 10px !important;
+      max-width: 300px;
+    }
+    .nav-logo{
+        margin: 55px 0;
+      }
+  }
+
+@media(max-width:900px){
+    .nav-logo{
+        width: 85%;
+        margin-bottom: 10px !important;
+        max-width: 300px;
+      }
+}
+
+@media(max-width:685px){
+.nav-container .nav-corner{
+    position: relative;
+    margin-top: 14px;
+    width: 100%;
+    right: auto;
+}
+.nav-container .top-nav{
+    position: relative;
+    width: 100%;
+    transform: none;
+    left: auto;
+}
+}
+
+
+/* scrollbar */
+*::-webkit-scrollbar {
+    width: 5px;
+    background-color: #606060;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #929292;
+    border: none;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background-color: #080e12;
+  }
+
+
+/* content */
+
+  .content-inner {
     padding: 0 10px;
     max-width: 880px;
     margin: auto;
 }
+
+
+
+
 
 .intro {
     background: white;
@@ -104,6 +194,42 @@ body {
     border-width: 4px 0 4px 5px;
     border-color: transparent transparent transparent #f87111;
 }
+
+.intro div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+.intro a:hover {
+color: #7F45F0;
+}
+
+.intro a:hover:after {
+border-color: transparent transparent transparent #008de4;
+}
+
+
+
+@media (max-width: 550px) {
+    .intro {
+      flex-direction: column;
+      margin-top: 15px;
+    }
+  
+    .intro * {
+      text-align: center /*!important*/;
+    }
+  
+    .intro a {
+      margin-top: 6px;
+    }
+
+    .viewdetailpage .intro {
+        text-align: left /*!important*/;
+      }
+
+
+  }
 
 
 .bounty-table {
@@ -158,4 +284,42 @@ body {
 
 .left-column {
     padding-left: 15px !important;
+}
+
+@media(max-width: 415px){
+    .content-inner .bounty-table thead{
+      font-size: 14px;
+    }
+}
+
+@media(max-width: 800px){
+    .view-homepage .intro{
+        text-align: center;
+      }
+}
+
+@media(max-width: 650px){
+    .view-homepage .intro{
+        min-height: 58px;
+      }
+      .view-homepage .intro a{
+        display: block;
+        text-align: center;
+      }
+}
+
+@media(max-width: 800px){
+    .view-detailpage .intro{
+        text-align: left;
+      }
+}
+
+@media(max-width: 650px){
+    .view-detailpage .intro{
+        min-height: 58px;
+      }
+      .view-homepage .intro a{
+        display: block;
+        text-align: left;
+      }
 }
